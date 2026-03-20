@@ -1,0 +1,24 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "menu"
+    label: "Weekly Menu"
+    files:
+      - label: "Menu Items"
+        name: "menu"
+        file: "menu.json"
+        fields:
+          - label: "Menu Items"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Dish Name", name: "name", widget: "string" }
+              - { label: "Type (e.g. Poultry, Seafood)", name: "type", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Price (numbers only, e.g. 12)", name: "price", widget: "string" }
+              - { label: "Photo", name: "image", widget: "image" }

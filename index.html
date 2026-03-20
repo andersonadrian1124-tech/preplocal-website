@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prep LoCal — Flavor N Spice, Everything Nice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #0f172a; line-height: 1.6; overflow-x: hidden; }
+    img { display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    :root {
+      --navy: #1a2472;
+      --navy-dark: #0d1554;
+      --red: #e03e2d;
+      --red-hover: #c0392b;
+      --green: #27ae60;
+      --green-light: #2ecc71;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+      --radius: 16px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.14);
+      --shadow-xl: 0 24px 64px rgba(0,0,0,0.18);
+      --t: 0.22s ease;
+    }
+
+    .container { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 28px; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 28px; border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.95rem;
+      cursor: pointer; border: none; transition: all var(--t); white-space: nowrap;
+    }
+    .btn-primary { background: var(--red); color: #fff; box-shadow: 0 4px 14px rgba(224,62,45,0.35); }
+    .btn-primary:hover { background: var(--red-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(224,62,45,0.45); }
+    .btn-ghost { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.22); backdrop-filter: blur(8px); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+    .btn-lg { padding: 16px 36px; font-size: 1.05rem; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+
+    /* ── NAVBAR ── */
+    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+    .navbar-inner {
+      margin: 12px 20px;
+      background: rgba(13,21,84,0.94); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+      padding: 10px 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 10px; }
+    .logo-img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+    .logo-name { font-family: 'Syne', sans-serif; font-weight: 900; font-size: 1.25rem; line-height: 1; }
+    .logo-name .lo { color: #fff; }
+    .logo-name .cal { color: var(--green); }
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links li a { font-size: 0.88rem; font-weight: 500; color: rgba(255,255,255,0.78); padding: 7px 14px; border-radius: 50px; transition: all var(--t); }
+    .nav-links li a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+    .nav-links .nav-cta a { background: var(--red); color: #fff; font-weight: 600; box-shadow: 0 2px 10px rgba(224,62,45,0.4); }
+    .nav-links .nav-cta a:hover { background: var(--red-hover); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; flex-direction: column; gap: 2px;
+      background: rgba(10,15,60,0.98); backdrop-filter: blur(16px);
+      padding: 12px 20px 20px; border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 0.95rem; font-weight: 500; color: rgba(255,255,255,0.85); padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .mobile-menu a:last-child { border: none; margin-top: 8px; background: var(--red); color: #fff; text-align: center; padding: 12px; border-radius: 50px; font-weight: 600; }
+
+    /* ── HERO ── */
+    .hero-wrap {
+      background: linear-gradient(140deg, #070d38 0%, #0d1554 45%, #1a2472 75%, #0e1655 100%);
+      position: relative; min-height: 100vh; display: flex; align-items: center;
+    }
+    .hero-wrap::before {
+      content: ''; position: absolute; width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(224,62,45,0.08) 0%, transparent 70%);
+      top: -200px; right: -150px; pointer-events: none;
+    }
+    .hero-wrap::after {
+      content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(39,174,96,0.06) 0%, transparent 70%);
+      bottom: -150px; left: -100px; pointer-events: none;
+    }
+    .hero {
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 60px;
+      padding: 130px 28px 80px;
+      max-width: 1160px; margin: 0 auto; width: 100%;
+      position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.3);
+      color: #4ade80; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 50px; margin-bottom: 20px;
+    }
+    .hero-badge .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulsedot 2s infinite; flex-shrink: 0; }
+    @keyframes pulsedot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+    .hero h1 {
+      font-family: 'Syne', sans-serif; font-weight: 900;
+      font-size: clamp(2.6rem, 5.5vw, 4rem); line-height: 1.2;
+      color: #fff; margin-bottom: 16px;
+      overflow: visible; padding-bottom: 0.2em;
+    }
+    .hero h1 .accent { color: var(--green); }
+    .hero-tagline {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.42);
+      letter-spacing: 0.04em; margin-bottom: 20px; font-style: italic;
+    }
+    .hero-tagline span { color: var(--red); font-style: normal; }
+    .hero-sub { font-size: 1.02rem; color: rgba(255,255,255,0.62); line-height: 1.78; margin-bottom: 32px; max-width: 460px; }
+    .hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; }
+    .deadline-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13);
+      color: rgba(255,255,255,0.72); font-size: 0.82rem; font-weight: 500;
+      padding: 8px 16px; border-radius: 50px;
+    }
+    .deadline-badge .red-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; animation: pulsedot 1.8s infinite; }
+    .hero-stats { display: flex; gap: 0; margin-top: 36px; }
+    .hero-stat { flex: 1; }
+    .hero-stat + .hero-stat { border-left: 1px solid rgba(255,255,255,0.1); padding-left: 28px; }
+    .hero-stat-num { font-family: 'Syne', sans-serif; font-weight: 900; font-size: 1.75rem; color: #fff; line-height: 1; }
+    .hero-stat-num .acc { color: var(--green); }
+    .hero-stat-label { font-size: 0.74rem; color: rgba(255,255,255,0.4); margin-top: 4px; letter-spacing: 0.03em; }
+
+    /* ── HERO VISUAL — bento food collage ── */
+    .hero-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 12px;
+      position: relative;
+    }
+    /* top image spans full width */
+    .hv-main {
+      grid-column: 1 / -1;
+      position: relative; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .hv-main .img-box {
+      width: 100%; aspect-ratio: 4 / 3; overflow: hidden;
+      background: #0d1554;
+    }
+    .hv-main .img-box img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center center;
+      display: block; transition: transform 0.5s ease;
+    }
+    .hv-main:hover .img-box img { transform: scale(1.05); }
+
+    /* bottom two equal tiles */
+    .hv-tile {
+      position: relative; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .hv-tile .img-box {
+      width: 100%; aspect-ratio: 1 / 1; overflow: hidden;
+      background: #0d1554;
+    }
+    .hv-tile .img-box img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block; transition: transform 0.5s ease;
+    }
+    .hv-tile:hover .img-box img { transform: scale(1.07); }
+
+    /* gradient label overlay */
+    .img-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 36px 14px 14px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 8px;
+    }
+    .img-label-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; color: #fff; line-height: 1.2; }
+    .img-label-price { font-family: 'Syne', sans-serif; font-weight: 900; font-size: 1rem; color: #4ade80; white-space: nowrap; }
+
+    /* logo stamp on top image */
+    .hv-logo {
+      position: absolute; top: 14px; right: 14px; z-index: 2;
+      background: #fff; border-radius: 50%; padding: 3px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+    .hv-logo img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; display: block; }
+
+    /* ── TRUST STRIP ── */
+    .trust-strip { background: var(--navy-dark); border-top: 1px solid rgba(255,255,255,0.06); padding: 18px 0; }
+    .trust-inner { display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.83rem; color: rgba(255,255,255,0.58); font-weight: 500; }
+    .trust-check { color: var(--green); font-weight: 700; }
+
+    /* ── TAGLINE BAND ── */
+    .tagline-band { background: var(--red); padding: 18px 0; text-align: center; }
+    .tagline-band p {
+      font-family: 'Syne', sans-serif; font-weight: 900;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: #fff; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .tagline-band p span { color: rgba(255,255,255,0.52); font-weight: 700; }
+
+    /* ── SECTION COMMONS ── */
+    .section-head { text-align: center; margin-bottom: 56px; }
+    .section-logo-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 14px; }
+    .section-logo-row img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+    .section-tag {
+      display: inline-block; font-size: 0.71rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 50px; margin-bottom: 14px;
+    }
+    .tag-navy { background: var(--navy); color: #fff; }
+    .tag-green { background: rgba(39,174,96,0.12); color: var(--green); border: 1px solid rgba(39,174,96,0.25); }
+    .tag-red { background: rgba(224,62,45,0.1); color: var(--red); border: 1px solid rgba(224,62,45,0.2); }
+    .section-title {
+      font-family: 'Syne', sans-serif; font-weight: 900;
+      font-size: clamp(1.9rem, 4vw, 2.8rem); color: var(--gray-800); margin-bottom: 12px;
+      line-height: 1.2; overflow: visible; padding-bottom: 0.1em;
+    }
+    .section-sub { font-size: 1rem; color: var(--gray-600); max-width: 500px; margin: 0 auto; line-height: 1.72; }
+
+    /* ── MENU SECTION ── */
+    .menu-section { background: var(--gray-50); padding: 100px 0 84px; }
+    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+
+    .meal-card {
+      background: #fff; border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200);
+      transition: transform var(--t), box-shadow var(--t);
+    }
+    .meal-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); }
+
+    /* KEY FIX: consistent 4:3 ratio, object-fit cover */
+    .meal-img-wrap {
+      position: relative; overflow: hidden;
+      width: 100%; aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, #0d1554 0%, #1a2472 100%);
+    }
+    .meal-img-wrap img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block; transition: transform 0.5s ease;
+    }
+    .meal-card:hover .meal-img-wrap img { transform: scale(1.06); }
+
+    .meal-type-tag {
+      position: absolute; top: 12px; left: 12px; z-index: 1;
+      background: rgba(255,255,255,0.93); backdrop-filter: blur(8px);
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--navy); padding: 4px 11px; border-radius: 50px;
+    }
+    .meal-body { padding: 22px 24px 24px; }
+    .meal-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.02rem; color: var(--gray-800); margin-bottom: 8px; line-height: 1.3; }
+    .meal-desc { font-size: 0.84rem; color: var(--gray-600); line-height: 1.65; margin-bottom: 20px; }
+    .meal-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--gray-100); }
+    .meal-price { font-family: 'Syne', sans-serif; font-weight: 900; font-size: 1.5rem; color: var(--gray-800); }
+    .meal-price .per { font-size: 0.74rem; font-weight: 500; color: var(--gray-400); margin-left: 2px; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .meal-order-btn {
+      background: var(--navy); color: #fff; border: none; border-radius: 50px; cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.82rem;
+      padding: 9px 22px; transition: all var(--t);
+    }
+    .meal-order-btn:hover { background: var(--red); transform: scale(1.04); }
+
+    .seafood-note {
+      background: #fff; border: 1px solid var(--gray-200); border-left: 4px solid var(--red);
+      border-radius: 12px; padding: 16px 22px;
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 0.87rem; color: var(--gray-600); line-height: 1.65;
+      box-shadow: var(--shadow-sm);
+    }
+    .seafood-note .note-icon { color: var(--red); flex-shrink: 0; margin-top: 2px; }
+    .seafood-note strong { color: var(--gray-800); font-weight: 600; }
+
+    /* ── HOW IT WORKS ── */
+    .how-section { background: #fff; padding: 100px 0; }
+    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .how-card {
+      padding: 36px 30px; border: 1px solid var(--gray-200); border-radius: var(--radius);
+      position: relative; transition: all var(--t);
+    }
+    .how-card:hover { border-color: var(--navy); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .how-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--navy), var(--green)); opacity: 0; transition: opacity var(--t); }
+    .how-card:hover::before { opacity: 1; }
+    .how-num { font-family: 'Syne', sans-serif; font-weight: 900; font-size: 4rem; line-height: 1; color: var(--gray-200); margin-bottom: 12px; display: block; }
+    .how-icon { width: 44px; height: 44px; margin-bottom: 14px; color: var(--navy); }
+    .how-card h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.08rem; color: var(--gray-800); margin-bottom: 10px; overflow: visible; line-height: 1.3; }
+    .how-card p { font-size: 0.9rem; color: var(--gray-600); line-height: 1.68; }
+
+    /* ── PLANS ── */
+    .plans-section { background: var(--gray-50); padding: 100px 0; }
+    .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+    .plan-card {
+      background: #fff; border-radius: var(--radius); border: 2px solid var(--gray-200);
+      padding: 36px 30px; transition: all var(--t); position: relative;
+    }
+    .plan-card:hover { border-color: var(--navy); box-shadow: var(--shadow-lg); transform: translateY(-6px); }
+    .plan-card.featured { border-color: var(--red); box-shadow: 0 0 0 1px var(--red), var(--shadow-lg); transform: scale(1.03); }
+    .plan-card.featured:hover { transform: scale(1.03) translateY(-4px); }
+    .plan-pill { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 12px; border-radius: 50px; margin-bottom: 20px; }
+    .plan-pill.default { background: var(--gray-100); color: var(--gray-600); }
+    .plan-pill.popular { background: var(--red); color: #fff; }
+    .plan-name { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--gray-800); margin-bottom: 8px; letter-spacing: -0.01em; }
+    .plan-count { font-family: 'Syne', sans-serif; font-weight: 900; font-size: 3.2rem; color: var(--navy); line-height: 1; margin-bottom: 6px; }
+    .plan-count sub { font-size: 1rem; font-weight: 600; color: var(--gray-400); vertical-align: middle; }
+    .plan-cadence { font-size: 0.88rem; color: var(--gray-600); margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--gray-100); }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 28px; }
+    .plan-features li { font-size: 0.87rem; color: var(--gray-600); display: flex; align-items: center; gap: 10px; }
+    .plan-features li::before {
+      content: ''; width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(39,174,96,0.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2327ae60' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/12px no-repeat;
+    }
+    .plan-btn {
+      width: 100%; padding: 13px; border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; border: 2px solid var(--navy); color: var(--navy);
+      background: transparent; transition: all var(--t);
+    }
+    .plan-btn:hover, .plan-card.featured .plan-btn { background: var(--navy); color: #fff; }
+
+    .policy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .policy-card {
+      background: #fff; border: 1px solid var(--gray-200); border-radius: 12px;
+      padding: 22px 24px; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--shadow-sm);
+    }
+    .policy-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .policy-icon svg { width: 22px; height: 22px; }
+    .policy-title { font-weight: 700; font-size: 0.9rem; color: var(--gray-800); margin-bottom: 4px; }
+    .policy-desc { font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; }
+
+    /* ── ABOUT ── */
+    .about-section { background: #fff; padding: 100px 0; }
+    .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: center; }
+    .about-eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
+    .about-title { font-family: 'Syne', sans-serif; font-weight: 900; font-size: clamp(1.9rem, 3vw, 2.5rem); color: var(--gray-800); line-height: 1.25; margin-bottom: 28px; overflow: visible; padding-bottom: 0.1em; }
+.cert-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cert-chip {
+      background: var(--gray-100); color: var(--gray-800);
+      font-size: 0.77rem; font-weight: 600; letter-spacing: 0.03em;
+      padding: 7px 14px; border-radius: 50px; border: 1px solid var(--gray-200);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .cert-chip .check { color: var(--green); font-weight: 700; }
+
+    /* About section — chef photo */
+    .about-visual-wrap { position: relative; }
+
+    .chef-img-container {
+      width: 100%;
+      border-radius: 24px;
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+    }
+    .chef-img-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* floating chef logo badge */
+    .about-logo-float {
+      position: absolute; bottom: -18px; right: -18px;
+      background: #fff; border-radius: 20px; padding: 10px;
+      box-shadow: var(--shadow-lg); border: 1px solid var(--gray-200); z-index: 2;
+    }
+    .about-logo-float img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; display: block; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(140deg, #0d1554 0%, #1a2472 60%, #0d1554 100%);
+      padding: 100px 24px; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: ''; position: absolute; width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(224,62,45,0.09) 0%, transparent 70%);
+      top: -250px; right: -150px; pointer-events: none;
+    }
+    .cta-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+    .cta-logo { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; display: block; margin: 0 auto 28px; box-shadow: 0 8px 32px rgba(0,0,0,0.45); }
+    .cta-title { font-family: 'Syne', sans-serif; font-weight: 900; font-size: clamp(2rem, 5vw, 3.2rem); color: #fff; margin-bottom: 14px; line-height: 1.1; }
+    .cta-tagline { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: #4ade80; font-style: italic; letter-spacing: 0.04em; margin-bottom: 16px; }
+    .cta-sub { font-size: 1.02rem; color: rgba(255,255,255,0.6); margin-bottom: 40px; line-height: 1.72; }
+    .cta-actions { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
+    .cta-note { font-size: 0.85rem; color: rgba(255,255,255,0.38); }
+    .cta-note a { color: #4ade80; font-weight: 600; }
+    .cta-note a:hover { color: var(--green-light); }
+
+    /* ── FOOTER ── */
+    .footer { background: #060b2e; padding: 56px 28px 28px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .footer-logo-row img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; display: block; }
+    .footer-brand-name { font-family: 'Syne', sans-serif; font-weight: 900; font-size: 1.25rem; }
+    .footer-brand-name .lo { color: #fff; }
+    .footer-brand-name .cal { color: var(--green); }
+    .footer-tagline-brand { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.8rem; color: rgba(255,255,255,0.28); font-style: italic; margin-bottom: 12px; }
+    .footer-desc { font-size: 0.85rem; color: rgba(255,255,255,0.36); line-height: 1.65; max-width: 240px; }
+    .footer-col h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.38); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { font-size: 0.86rem; color: rgba(255,255,255,0.5); transition: color var(--t); }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.24); }
+    .footer-copy span { color: rgba(39,174,96,0.5); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding-top: 110px; gap: 40px; }
+      .hero-sub { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-visual { max-width: 520px; margin: 0 auto; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .how-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+      .plans-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+      .plan-card.featured { transform: none; }
+      .policy-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-visual-wrap { order: -1; max-width: 480px; margin: 0 auto; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; }
+    }
+    @media (max-width: 600px) {
+      .hero-visual { display: none; }
+      .menu-grid { grid-template-columns: 1fr; max-width: 380px; margin-left: auto; margin-right: auto; }
+      .trust-inner { gap: 18px; }
+      .cta-actions { flex-direction: column; width: 100%; }
+      .cta-actions .btn { width: 100%; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="#" class="logo-wrap">
+      <img src="./645783152_18056125247442526_4960523856380523296_n.jpg" alt="Prep LoCal" class="logo-img" />
+      <div class="logo-name"><span class="lo">Prep Lo</span><span class="cal">Cal</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#plans">Plans</a></li>
+      <li><a href="#about">About</a></li>
+      <li class="nav-cta"><a href="mailto:Preplocal312@gmail.com?subject=Meal%20Prep%20Order&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order%20for%20this%20week%27s%20menu.">Order Now</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#menu" onclick="closeMenu()">Menu</a>
+    <a href="#plans" onclick="closeMenu()">Plans</a>
+    <a href="#about" onclick="closeMenu()">About</a>
+    <a href="mailto:Preplocal312@gmail.com?subject=Meal%20Prep%20Order&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order%20for%20this%20week%27s%20menu." onclick="closeMenu()">Order Now</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero-wrap">
+  <div class="hero">
+    <!-- Left -->
+    <div>
+      <div class="hero-badge"><span class="live-dot"></span> Now accepting orders</div>
+      <h1>Healthy eating,<br>done <span class="accent">for you.</span></h1>
+      <p class="hero-tagline">"<span>Flavor N Spice,</span> Everything Nice"</p>
+      <p class="hero-sub">Chef-prepared, locally sourced meal prep ready every week. No cooking, no planning — just heat and eat.</p>
+      <div class="hero-actions">
+        <a href="mailto:Preplocal312@gmail.com?subject=Meal%20Prep%20Order&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order%20for%20this%20week%27s%20menu." class="btn btn-primary btn-lg">Order This Week</a>
+        <a href="#menu" class="btn btn-ghost btn-lg">See Menu</a>
+      </div>
+      <div class="deadline-badge">
+        <span class="red-dot"></span>
+        Order deadline: Every Friday at 12PM Noon
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">3<span class="acc">+</span></div>
+          <div class="hero-stat-label">Proteins weekly</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">20<span class="acc">mi</span></div>
+          <div class="hero-stat-label">Delivery radius</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">50<span class="acc">%</span></div>
+          <div class="hero-stat-label">Deposit to lock in</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right — bento food collage -->
+    <div class="hero-visual">
+      <!-- Top: salmon (most photogenic) -->
+      <div class="hv-main">
+        <div class="hv-logo">
+          <img src="./645783152_18056125247442526_4960523856380523296_n.jpg" alt="Prep LoCal" />
+        </div>
+        <div class="img-box">
+          <img src="./Screenshot 2026-03-20 at 11.22.25 AM.png" alt="Pan Seared Salmon" />
+        </div>
+        <div class="img-label">
+          <span class="img-label-name">Pan Seared Salmon</span>
+          <span class="img-label-price">$12</span>
+        </div>
+      </div>
+      <!-- Bottom left: chicken -->
+      <div class="hv-tile">
+        <div class="img-box">
+          <img src="./Screenshot 2026-03-20 at 11.25.35 AM.png" alt="Cajun or Lemon Pepper Chicken" />
+        </div>
+        <div class="img-label">
+          <span class="img-label-name">Cajun Chicken</span>
+          <span class="img-label-price">$8</span>
+        </div>
+      </div>
+      <!-- Bottom right: tilapia -->
+      <div class="hv-tile">
+        <div class="img-box">
+          <img src="./Screenshot 2026-03-20 at 11.22.07 AM.png" alt="Garlic Lemon Herb Tilapia" />
+        </div>
+        <div class="img-label">
+          <span class="img-label-name">Herb Tilapia</span>
+          <span class="img-label-price">$10</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TRUST STRIP ═══ -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item"><span class="trust-check">&#10003;</span> Food Handler Certified</div>
+    <div class="trust-item"><span class="trust-check">&#10003;</span> Allergen Certified</div>
+    <div class="trust-item"><span class="trust-check">&#10003;</span> Culinary Program Trained</div>
+    <div class="trust-item"><span class="trust-check">&#10003;</span> Michelin-Level Experience</div>
+    <div class="trust-item"><span class="trust-check">&#10003;</span> Pickup &amp; Delivery Available</div>
+  </div>
+</div>
+
+<!-- ═══ TAGLINE BAND ═══ -->
+<div class="tagline-band">
+  <p><span>Prep LoCal &mdash;</span> Flavor N Spice, Everything Nice</p>
+</div>
+
+<!-- ═══ MENU ═══ -->
+<section class="menu-section" id="menu">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-logo-row">
+        <img src="./645783152_18056125247442526_4960523856380523296_n.jpg" alt="Prep LoCal" />
+        <span class="section-tag tag-navy" id="menu-dates">March 14 &ndash; 21, 2026</span>
+      </div>
+      <h2 class="section-title">This Week's Menu</h2>
+      <p class="section-sub">Fresh, chef-prepared meals ready for your week</p>
+    </div>
+
+    <div class="menu-grid" id="menu-grid">
+      <!-- Menu items loaded dynamically from menu.json -->
+    </div>
+
+    <div class="seafood-note reveal">
+      <svg class="note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p><strong>Seafood Storage Note:</strong> Seafood can be stored for a maximum of 4 days. If you purchase a 7-day plan with seafood, store in the freezer and thaw in the fridge the day before reheating.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag tag-green">Simple Process</span>
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-sub">Three steps to a full week of healthy, delicious eating</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-card reveal">
+        <span class="how-num">01</span>
+        <svg class="how-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/>
+        </svg>
+        <h3>Choose Your Plan</h3>
+        <p>Pick from 10, 14, or 15 meal plans based on how many meals per day you need. Mix and match proteins each week.</p>
+      </div>
+      <div class="how-card reveal reveal-delay-1">
+        <span class="how-num">02</span>
+        <svg class="how-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <h3>Order by Friday Noon</h3>
+        <p>Place your order and 50% deposit before the weekly cutoff — every Friday at 12PM Noon — to lock in your meals.</p>
+      </div>
+      <div class="how-card reveal reveal-delay-2">
+        <span class="how-num">03</span>
+        <svg class="how-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+        <h3>Pickup or Delivery</h3>
+        <p>Pick up your meals or get them delivered within a 20-mile radius. Pay the balance at pickup or delivery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PLANS ═══ -->
+<section class="plans-section" id="plans">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-logo-row">
+        <img src="./645783152_18056125247442526_4960523856380523296_n.jpg" alt="Prep LoCal" />
+      </div>
+      <span class="section-tag tag-red">Meal Plans</span>
+      <h2 class="section-title">Choose Your Plan</h2>
+      <p class="section-sub">Minimum purchase is 10 meals. All plans freshly prepped weekly.</p>
+    </div>
+
+    <div class="plans-grid">
+      <div class="plan-card reveal">
+        <span class="plan-pill default">Starter</span>
+        <div class="plan-name">Starter Plan</div>
+        <div class="plan-count">10 <sub>meals</sub></div>
+        <div class="plan-cadence">2 meals per day &middot; 5 days</div>
+        <ul class="plan-features">
+          <li>Lunch + dinner covered</li>
+          <li>5-day week coverage</li>
+          <li>Mix &amp; match proteins</li>
+          <li>Weekly fresh prep</li>
+        </ul>
+        <button class="plan-btn" onclick="location.href='mailto:Preplocal312@gmail.com?subject=Meal%20Prep%20Order&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order%20for%20this%20week%27s%20menu.'">Get Started</button>
+      </div>
+      <div class="plan-card featured reveal reveal-delay-1">
+        <span class="plan-pill popular">Most Popular</span>
+        <div class="plan-name">Standard Plan</div>
+        <div class="plan-count">14 <sub>meals</sub></div>
+        <div class="plan-cadence">2 meals per day &middot; 7 days</div>
+        <ul class="plan-features">
+          <li>Full 7-day coverage</li>
+          <li>Lunch + dinner daily</li>
+          <li>Mix &amp; match proteins</li>
+          <li>Weekly fresh prep</li>
+        </ul>
+        <button class="plan-btn" onclick="location.href='mailto:Preplocal312@gmail.com?subject=Meal%20Prep%20Order&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order%20for%20this%20week%27s%20menu.'">Get Started</button>
+      </div>
+      <div class="plan-card reveal reveal-delay-2">
+        <span class="plan-pill default">Full Week</span>
+        <div class="plan-name">Full Plan</div>
+        <div class="plan-count">15 <sub>meals</sub></div>
+        <div class="plan-cadence">3 meals per day &middot; 5 days</div>
+        <ul class="plan-features">
+          <li>Breakfast, lunch &amp; dinner</li>
+          <li>5-day total coverage</li>
+          <li>Mix &amp; match proteins</li>
+          <li>Weekly fresh prep</li>
+        </ul>
+        <button class="plan-btn" onclick="location.href='mailto:Preplocal312@gmail.com?subject=Meal%20Prep%20Order&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order%20for%20this%20week%27s%20menu.'">Get Started</button>
+      </div>
+    </div>
+
+    <div class="policy-grid">
+      <div class="policy-card reveal">
+        <div class="policy-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div>
+          <div class="policy-title">Order Deadline</div>
+          <div class="policy-desc">Every Friday at 12PM Noon. Place your order before the cutoff to secure your meals for the week.</div>
+        </div>
+      </div>
+      <div class="policy-card reveal reveal-delay-1">
+        <div class="policy-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div>
+          <div class="policy-title">50% Deposit</div>
+          <div class="policy-desc">A 50% deposit is required at order. The remainder is due at pickup or delivery.</div>
+        </div>
+      </div>
+      <div class="policy-card reveal reveal-delay-2">
+        <div class="policy-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div>
+          <div class="policy-title">Delivery Available</div>
+          <div class="policy-desc">Delivery within a 20-mile radius. A delivery fee applies based on your location.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="about-eyebrow">Meet the Chef</div>
+        <h2 class="about-title">Passion for food.<br>Commitment to quality.</h2>
+<div class="cert-row">
+          <span class="cert-chip"><span class="check">&#10003;</span> Food Handler Certified</span>
+          <span class="cert-chip"><span class="check">&#10003;</span> Allergen Certified</span>
+          <span class="cert-chip"><span class="check">&#10003;</span> Culinary Program Training</span>
+          <span class="cert-chip"><span class="check">&#10003;</span> Fine Dining Experience</span>
+        </div>
+      </div>
+
+      <!-- Chef photo -->
+      <div class="about-visual-wrap reveal reveal-delay-1">
+        <div class="chef-img-container">
+          <img src="./Screenshot 2026-03-20 at 11.26.29 AM.png" alt="Prep LoCal Chef" />
+        </div>
+        <div class="about-logo-float">
+          <img src="./645783152_18056125247442526_4960523856380523296_n.jpg" alt="Prep LoCal" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section" id="order">
+  <div class="cta-inner reveal">
+    <img src="./645783152_18056125247442526_4960523856380523296_n.jpg" alt="Prep LoCal" class="cta-logo" />
+    <h2 class="cta-title">Ready to eat healthy<br>this week?</h2>
+    <p class="cta-tagline">"Flavor N Spice, Everything Nice"</p>
+    <p class="cta-sub">Skip the meal planning and grocery runs. Let us handle the prep — all you do is heat and eat.</p>
+    <div class="cta-actions">
+      <a href="mailto:Preplocal312@gmail.com?subject=Meal%20Prep%20Order&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order%20for%20this%20week%27s%20menu." class="btn btn-primary btn-lg">Order This Week's Menu</a>
+      <a href="#menu" class="btn btn-ghost btn-lg">View Menu</a>
+    </div>
+    <p class="cta-note">Or DM us on <a href="https://www.instagram.com/preplocal/" target="_blank" rel="noopener noreferrer">Instagram</a> to get started &mdash; we'll walk you through your options.</p>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <img src="./645783152_18056125247442526_4960523856380523296_n.jpg" alt="Prep LoCal" />
+          <div class="footer-brand-name"><span class="lo">Prep Lo</span><span class="cal">Cal</span></div>
+        </div>
+        <div class="footer-tagline-brand">"Flavor N Spice, Everything Nice"</div>
+        <p class="footer-desc">Fresh, locally sourced meal prep. Chef-prepared weekly so you can focus on living, not cooking.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#menu">This Week's Menu</a></li>
+          <li><a href="#plans">Meal Plans</a></li>
+          <li><a href="#about">About the Chef</a></li>
+          <li><a href="#order">Order Now</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Policies</h4>
+        <ul>
+          <li><a href="#plans">Order Deadlines</a></li>
+          <li><a href="#plans">Deposit Policy</a></li>
+          <li><a href="#plans">Delivery Info</a></li>
+          <li><a href="#menu">Seafood Storage</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 <span>Prep LoCal</span> &middot; All Rights Reserved</p>
+      <p class="footer-copy">Healthy Eating Made Easy</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Auto-update menu week dates (Saturday → Friday)
+  (function() {
+    const now = new Date();
+    const day = now.getDay(); // 0=Sun,1=Mon,...,6=Sat
+    // Find the most recent Saturday (start of menu week)
+    const daysToSat = (day + 1) % 7; // days since last Sat
+    const sat = new Date(now);
+    sat.setDate(now.getDate() - daysToSat);
+    // End = Friday (6 days after Sat)
+    const fri = new Date(sat);
+    fri.setDate(sat.getDate() + 6);
+
+    const fmt = { month: 'long', day: 'numeric' };
+    const start = sat.toLocaleDateString('en-US', fmt);
+    const end = fri.toLocaleDateString('en-US', fmt);
+    const year = fri.getFullYear();
+    const el = document.getElementById('menu-dates');
+    if (el) el.textContent = start + ' \u2013 ' + end + ', ' + year;
+  })();
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+  document.addEventListener('click', e => {
+    if (!document.querySelector('.navbar').contains(e.target)) closeMenu();
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Load menu from menu.json
+  const ORDER_LINK = "mailto:Preplocal312@gmail.com?subject=Meal%20Prep%20Order&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order%20for%20this%20week%27s%20menu.";
+  fetch('/menu.json')
+    .then(r => r.json())
+    .then(data => {
+      const grid = document.getElementById('menu-grid');
+      grid.innerHTML = data.items.map((item, i) => `
+        <div class="meal-card reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}">
+          <div class="meal-img-wrap">
+            <img src="${item.image}" alt="${item.name}" loading="lazy" />
+            <span class="meal-type-tag">${item.type}</span>
+          </div>
+          <div class="meal-body">
+            <div class="meal-title">${item.name}</div>
+            <div class="meal-desc">${item.description}</div>
+            <div class="meal-footer">
+              <div class="meal-price">$${item.price}<span class="per">/meal</span></div>
+              <button class="meal-order-btn" onclick="location.href='${ORDER_LINK}'">Order</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      // Observe newly added cards for reveal animation
+      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    });
+
+  // Netlify Identity redirect
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
+      }
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "name": "Cajun or Lemon Pepper Chicken",
+      "type": "Poultry",
+      "description": "Served with roasted squash, red peppers, red onions and broccoli",
+      "price": "8",
+      "image": "/uploads/chicken.jpg"
+    },
+    {
+      "name": "Pan Seared Salmon",
+      "type": "Seafood",
+      "description": "On a bed of orange, yellow, and red peppers with red onion",
+      "price": "12",
+      "image": "/uploads/salmon.jpg"
+    },
+    {
+      "name": "Garlic Lemon Herb Tilapia",
+      "type": "Seafood",
+      "description": "Served with broccoli stir fried in garlic rosemary infused olive oil",
+      "price": "10",
+      "image": "/uploads/tilapia.jpg"
+    }
+  ]
+}
