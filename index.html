@@ -519,40 +519,8 @@
     </div>
 
     <!-- Right — bento food collage -->
-    <div class="hero-visual">
-      <!-- Top: salmon (most photogenic) -->
-      <div class="hv-main">
-        <div class="hv-logo">
-          <img src="./645783152_18056125247442526_4960523856380523296_n.jpg" alt="Prep LoCal" />
-        </div>
-        <div class="img-box">
-          <img src="./Screenshot 2026-03-20 at 11.22.25 AM.png" alt="Pan Seared Salmon" />
-        </div>
-        <div class="img-label">
-          <span class="img-label-name">Pan Seared Salmon</span>
-          <span class="img-label-price">$12</span>
-        </div>
-      </div>
-      <!-- Bottom left: chicken -->
-      <div class="hv-tile">
-        <div class="img-box">
-          <img src="./Screenshot 2026-03-20 at 11.25.35 AM.png" alt="Cajun or Lemon Pepper Chicken" />
-        </div>
-        <div class="img-label">
-          <span class="img-label-name">Cajun Chicken</span>
-          <span class="img-label-price">$8</span>
-        </div>
-      </div>
-      <!-- Bottom right: tilapia -->
-      <div class="hv-tile">
-        <div class="img-box">
-          <img src="./Screenshot 2026-03-20 at 11.22.07 AM.png" alt="Garlic Lemon Herb Tilapia" />
-        </div>
-        <div class="img-label">
-          <span class="img-label-name">Herb Tilapia</span>
-          <span class="img-label-price">$10</span>
-        </div>
-      </div>
+    <div class="hero-visual" id="hero-visual">
+      <!-- Populated dynamically from menu.json -->
     </div>
   </div>
 </div>
@@ -841,14 +809,16 @@
 
   // Load menu from menu.json
   const ORDER_LINK = "mailto:Preplocal312@gmail.com?subject=Meal%20Prep%20Order&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order%20for%20this%20week%27s%20menu.";
+  const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f1f5f9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='14' fill='%2394a3b8'%3EPhoto coming soon%3C/text%3E%3C/svg%3E";
   fetch('/menu.json')
     .then(r => r.json())
     .then(data => {
+      // ── Menu grid ──
       const grid = document.getElementById('menu-grid');
       grid.innerHTML = data.items.map((item, i) => `
         <div class="meal-card reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}">
           <div class="meal-img-wrap">
-            <img src="${item.image}" alt="${item.name}" loading="lazy" />
+            <img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.src='${PLACEHOLDER}';this.onerror=null" />
             <span class="meal-type-tag">${item.type}</span>
           </div>
           <div class="meal-body">
@@ -861,8 +831,34 @@
           </div>
         </div>
       `).join('');
-      // Observe newly added cards for reveal animation
       grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      // ── Hero bento (first 3 items from this week's menu) ──
+      const heroVisual = document.getElementById('hero-visual');
+      const logoSrc = './645783152_18056125247442526_4960523856380523296_n.jpg';
+      const items = data.items.slice(0, 3);
+      if (items.length > 0) {
+        const main = items[0];
+        const tiles = items.slice(1);
+        heroVisual.innerHTML = `
+          <div class="hv-main">
+            <div class="hv-logo"><img src="${logoSrc}" alt="Prep LoCal" onerror="this.style.display='none';this.onerror=null" /></div>
+            <div class="img-box"><img src="${main.image}" alt="${main.name}" onerror="this.src='${PLACEHOLDER}';this.onerror=null" /></div>
+            <div class="img-label">
+              <span class="img-label-name">${main.name}</span>
+              <span class="img-label-price">$${main.price}</span>
+            </div>
+          </div>
+          ${tiles.map(t => `
+          <div class="hv-tile">
+            <div class="img-box"><img src="${t.image}" alt="${t.name}" onerror="this.src='${PLACEHOLDER}';this.onerror=null" /></div>
+            <div class="img-label">
+              <span class="img-label-name">${t.name}</span>
+              <span class="img-label-price">$${t.price}</span>
+            </div>
+          </div>`).join('')}
+        `;
+      }
     });
 
   // Netlify Identity redirect
