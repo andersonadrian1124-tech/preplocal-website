@@ -1,11 +1,11 @@
 {
   "items": [
     {
-      "name": "Cajun or Lemon Pepper Chicken",
+      "name": "Honey Chipotle Chicken With Fajitas and White Rice",
       "type": "Poultry",
-      "description": "Served with roasted squash, red peppers, red onions and broccoli",
-      "price": "8",
-      "image": "/uploads/chicken.jpg"
+      "description": "Chicken marinated for 12 hours with a Honey Chipotle Marinade served with Fajitas and Cilantro Lime Rice",
+      "price": "10",
+      "image": "/uploads/img_0571.jpeg"
     },
     {
       "name": "Pan Seared Salmon",
