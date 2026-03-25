@@ -5,21 +5,21 @@
       "type": "Poultry",
       "description": "Chicken marinated for 12 hours with a Honey Chipotle Marinade served with Fajitas and Cilantro Lime Rice",
       "price": "10",
-      "image": "/uploads/img_0571.jpeg"
+      "image": "/uploads/chicken-fajitas.png"
     },
     {
       "name": "Garlic Herb Salmon with Roasted Broccoli and White Rice",
       "type": "Seafood",
       "description": "Salmon based with a Garlic Herb butter and Seasoned Roasted Broccoli with Fluffy White Rice",
       "price": "14",
-      "image": "/uploads/img_7472.jpeg"
+      "image": "/uploads/salmon.png"
     },
     {
       "name": "Basil Pesto Shrimp Roasted Poblano Verde Protein Pasta",
       "type": "Shellfish",
       "description": "Marinated Shrimp with Basil Garlic Olive Oil with a Protein Pasta coated with Creamy Roasted Poblano Verde Sauce ",
       "price": "14",
-      "image": "/uploads/img_7468.jpeg"
+      "image": "/uploads/pesto.png"
     }
   ]
 }
